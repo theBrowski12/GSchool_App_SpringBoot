@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{template}">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifier un Étudiant</title>
+    <style>
+        /* Style personnalisé pour la couleur ambrée */
+        .bg-amber {
+            background-color: #FFA500; /* Couleur ambrée */
+        }
+        .btn-amber {
+            background-color: #FFA500;
+            border-color: #FFA500;
+            color: #000; /* Texte noir pour contraster */
+        }
+        .btn-amber:hover {
+            background-color: #cc8400; /* Une nuance plus foncée pour le survol */
+            border-color: #cc8400;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <!-- En-tête de la carte avec couleur ambrée -->
+                    <div class="card-header bg-amber text-black">
+                        <h3 class="card-title text-center">Modifier un étudiant</h3>
+                    </div>
+                    <div class="card-body">
+                        <!-- Formulaire de modification d'un étudiant -->
+                        <form th:action="@{/admin/updateetudiant}" th:object="${etudiant}" method="post" class="needs-validation" novalidate>
+                            <!-- Champ caché pour l'ID de l'étudiant -->
+                            <input type="hidden" th:field="*{id_etudiant}" />
+
+                            <!-- Champ Nom -->
+                            <div class="mb-3">
+                                <label for="nom" class="form-label">Nom</label>
+                                <input type="text" class="form-control" id="nom" th:field="*{nom}" required>
+                                <div class="invalid-feedback">Veuillez entrer un nom valide.</div>
+                            </div>
+
+                            <!-- Champ Prénom -->
+                            <div class="mb-3">
+                                <label for="prenom" class="form-label">Prénom</label>
+                                <input type="text" class="form-control" id="prenom" th:field="*{prenom}" required>
+                                <div class="invalid-feedback">Veuillez entrer un prénom valide.</div>
+                            </div>
+
+                            <!-- Champ CNE -->
+                            <div class="mb-3">
+                                <label for="cne" class="form-label">CNE</label>
+                                <input type="text" class="form-control" id="cne" th:field="*{cne}" required>
+                                <div class="invalid-feedback">Veuillez entrer un CNE valide.</div>
+                            </div>
+
+                            <!-- Champ Photos (URL de l'image) -->
+                            <div class="mb-3">
+                                <label for="photos" class="form-label">URL de la photo</label>
+                                <input type="file" class="form-control" id="photos" th:field="*{photos}">
+                                <div class="invalid-feedback">Veuillez entrer une URL valide.</div>
+                            </div>
+
+                            <!-- Liste déroulante pour la filière -->
+                            <div class="mb-3">
+                                <label for="filiere" class="form-label">Filière</label>
+                                <select class="form-select" id="filiere" th:field="*{filiere}" required>
+                                    <option value="">Sélectionnez une filière</option>
+                                    <option th:each="filiere : ${filieres}"
+                                            th:value="${filiere.id_filiere}"
+                                            th:text="${filiere.libelle}"
+                                            th:selected="${filiere.id_filiere == etudiant.filiere.id_filiere}">
+                                    </option>
+                                </select>
+                                <div class="invalid-feedback">Veuillez sélectionner une filière.</div>
+                            </div>
+
+                            <!-- Boutons -->
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                                <button type="submit" class="btn btn-amber me-md-2">Mettre à jour</button>
+                                <a th:href="@{/user/listeetudiants}" class="btn btn-secondary">Annuler</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

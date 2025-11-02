@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{template}">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des Etudiants</title>
+    <!-- Lien vers votre fichier CSS personnalisé -->
+    <link th:href="@{/css/styles.css}" rel="stylesheet">
+</head>
+<body>
+<div layout:fragment="content">
+    <!-- Formulaire de recherche -->
+    <div class="card mb-4">
+        <div class="card-header bg-custom">
+            <h5 class="card-title mb-0">Rechercher un etudiant</h5>
+        </div>
+        <div class="card-body">
+            <form th:action="@{/user/listetudiant}" method="get" class="row g-3">
+                <div class="col-md-8">
+                    <label for="motCle" class="form-label">Recherche :</label>
+                    <input type="text" id="motCle" name="motCle" th:value="${motCle}" class="form-control" placeholder="Entrez le CNE">
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                    <button type="submit" class="btn btn-custom">Chercher</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Boutons d'exportation -->
+    <div class="d-flex justify-content-end mb-4">
+        <a th:href="@{/user/etudiants/pdf}" class="btn btn-primary">
+            <i class="fas fa-file-pdf"></i> Exporter en PDF
+        </a>
+        <a th:href="@{/user/etudiants/excel}" class="btn btn-success">
+            <i class="fas fa-file-excel"></i> Exporter en Excel
+        </a>
+    </div>
+    <!-- Liste des Etudiants -->
+    <div class="card">
+        <div class="card-header bg-custom">
+            <h5 class="card-title mb-0">Liste des Etudiants</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead class="table-custom">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nom</th>
+                        <th>Prenom</th>
+                        <th>CNE</th>
+                        <th>Photo</th>
+                        <th>Filiere</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr th:each="p : ${listetudiant}">
+                        <td th:text="${p.id_etudiant}"></td>
+                        <td th:text="${p.nom}"></td>
+                        <td th:text="${p.prenom}"></td>
+                        <td th:text="${p.cne}"></td>
+                        <td th:text="${p.photos}"></td>
+                        <td th:text="${p.filiere.getLibelle()}"></td>
+                        <td>
+                            <a onclick="return confirm('Êtes-vous sûr ?')"
+                               th:href="@{/admin/deleteetudiant(id=${p.id_etudiant},size=${size},motCle=${motCle},page=${pagecourant})}"
+                               class="btn btn-danger btn-sm">Supprimer</a>
+                            <a th:href="@{/admin/editetudiant(id=${p.id_etudiant})}"
+                               class="btn btn-warning btn-sm">Modifier</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li th:each="pa,status : ${pages}" class="page-item" th:classappend="${status.index == pagecourant} ? 'active' : ''">
+                <a class="page-link" th:href="@{/user/listetudiant(page=${status.index},size=${size},motCle=${motCle})}" th:text="${status.index + 1}"></a>
+            </li>
+        </ul>
+    </nav>
+</div>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{template}">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifier une Filière</title>
+    <style>
+        /* Couleur ambrée personnalisée */
+        .bg-amber {
+            background-color: #FFA500; /* Couleur ambrée */
+        }
+        .btn-amber {
+            background-color: #FFA500;
+            border-color: #FFA500;
+            color: #000; /* Texte noir pour contraster */
+        }
+        .btn-amber:hover {
+            background-color: #cc8400; /* Une nuance plus foncée pour le survol */
+            border-color: #cc8400;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <!-- En-tête de la carte avec couleur ambrée -->
+                    <div class="card-header bg-amber text-black">
+                        <h3 class="card-title text-center">Modifier une filière</h3>
+                    </div>
+                    <div class="card-body">
+                        <!-- Formulaire de modification d'une filière -->
+                        <form th:action="@{/admin/savefiliere}" th:object="${filiere}" method="post" class="needs-validation" novalidate>
+                            <!-- Champ caché pour l'ID de la filière -->
+                            <input type="hidden" th:field="*{id_filiere}" />
+
+                            <!-- Champ Code -->
+                            <div class="mb-3">
+                                <label for="code" class="form-label">Code</label>
+                                <input type="text" class="form-control" id="code" th:field="*{code}" required>
+                                <div class="invalid-feedback">Veuillez entrer un code valide.</div>
+                            </div>
+
+                            <!-- Champ Libellé -->
+                            <div class="mb-3">
+                                <label for="libelle" class="form-label">Libellé</label>
+                                <input type="text" class="form-control" id="libelle" th:field="*{libelle}" required>
+                                <div class="invalid-feedback">Veuillez entrer un libellé valide.</div>
+                            </div>
+
+                            <!-- Boutons -->
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                                <button type="submit" class="btn btn-amber me-md-2">Mettre à jour</button>
+                                <a th:href="@{/user/listefiliere}" class="btn btn-secondary">Annuler</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script pour la validation du formulaire -->
+<script>
+    (function () {
+        'use strict'
+
+        // Récupérer tous les formulaires auxquels nous voulons appliquer des styles de validation Bootstrap personnalisés
+        var forms = document.querySelectorAll('.needs-validation')
+
+        // Boucler sur eux et empêcher la soumission
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+</script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{template}"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ajouter un Utilisateur</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome for icons -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<div layout:fragment="content">
+<div class="container mt-5">
+  <h1 class="mb-4">Ajouter un Utilisateur</h1>
+
+  <!-- Add User Form -->
+  <form th:action="@{/addUser}" method="post">
+    <div th:if="${message}" class="alert alert-success" role="alert">
+      <p th:text="${message}"></p>
+
+    </div>
+    <!-- Username -->
+    <div class="mb-3">
+      <label for="username" class="form-label">Nom d'utilisateur</label>
+      <input type="text" class="form-control" id="username" name="username" th:value="*{appUser?.username}" required>
+    </div>
+
+    <!-- Password -->
+    <div class="mb-3">
+      <label for="password" class="form-label">Mot de passe</label>
+      <input type="password" class="form-control" id="password" name="password" required>
+    </div>
+    <!-- Password -->
+    <div class="mb-3">
+      <label for="password" class="form-label">Confirme Mot de passe</label>
+      <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="roles" class="form-label">Rôles</label>
+      <select class="form-select" id="roles" name="roles" multiple>
+        <!-- Iterate over the Roles list -->
+        <option th:each="r : ${roles}" th:value="${r.role}" th:text="${r.role}"
+        th:selected="${appUser?.roles != null && #sets.contains(appUser.roles.![role], r.role)}"></option>
+      </select>
+      <small class="form-text text-muted">Maintenez la touche Ctrl (Windows) ou Commande (Mac) pour sélectionner plusieurs rôles.</small>
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit" class="btn btn-primary">
+      <i class="fas fa-save"></i> Enregistrer
+    </button>
+    <!-- Cancel Button -->
+    <a th:href="@{/user/home}" class="btn btn-secondary ms-2">
+      <i class="fas fa-times"></i> Annuler
+    </a>
+  </form>
+</div>
+</div>
+
+<!-- Bootstrap 5 JS and dependencies -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{template}">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Tableau de bord</title>
+    <script th:src="@{/js/da2.js}"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <!-- Éléments pour stocker les données Thymeleaf -->
+    <div id="chart-data"
+         th:data-filieres="${filieres}"
+         th:data-nombre-etudiants="${nombreEtudiants}"
+         style="display: none;">
+    </div>
+
+    <div class="container-fluid">
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Tableau de bord</h1>
+        </div>
+
+        <div class="row">
+            <!-- Carte pour le graphique circulaire -->
+            <div class="col-xl-6 col-md-6 mb-4">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 bg-dark text-white">
+                        <h6 class="m-0 font-weight-bold">Répartition des Filières</h6>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="pieChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carte pour le graphique à barres -->
+            <div class="col-xl-6 col-md-6 mb-4">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 bg-dark text-white">
+                        <h6 class="m-0 font-weight-bold">Nombre des Étudiants par Filière</h6>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="barChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

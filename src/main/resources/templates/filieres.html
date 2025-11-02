@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{template}">
+<head>
+  <meta charset="UTF-8">
+  <title>Liste des Filieres</title>
+  <!-- Lien vers votre fichier CSS personnalisé -->
+  <link th:href="@{/css/styles.css}" rel="stylesheet">
+</head>
+<body>
+<div layout:fragment="content">
+  <!-- Formulaire de recherche -->
+  <div class="card mb-4">
+    <div class="card-header bg-custom">
+      <h5 class="card-title mb-0">Rechercher une filière</h5>
+    </div>
+    <div class="card-body">
+      <form th:action="@{/user/listefiliere}" method="get" class="row g-3">
+        <div class="col-md-8">
+          <label for="motCle" class="form-label">Recherche par Libelle :</label>
+          <input type="text" id="motCle" name="motCle" th:value="${motCle}" class="form-control" placeholder="Entrez un libellé">
+        </div>
+        <div class="col-md-4 d-flex align-items-end">
+          <button type="submit" class="btn btn-custom">Chercher</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- Boutons d'exportation -->
+  <div class="d-flex justify-content-end mb-4">
+    <a th:href="@{/user/export/pdf}" class="btn btn-primary">
+      <i class="fas fa-file-pdf"></i> Exporter en PDF
+    </a>
+    <a th:href="@{/user/export/excel}" class="btn btn-success">
+      <i class="fas fa-file-excel"></i> Exporter en Excel
+    </a>
+  </div>
+  <!-- Liste des filières -->
+  <div class="card">
+    <div class="card-header bg-custom">
+      <h5 class="card-title mb-0">Liste des filières</h5>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover">
+          <thead class="table-custom">
+          <tr>
+            <th>ID</th>
+            <th>CODE</th>
+            <th>LIBELLE</th>
+            <th>ACTIONS</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="p : ${listFilieres}">
+            <td th:text="${p.id_filiere}"></td>
+            <td th:text="${p.code}"></td>
+            <td th:text="${p.libelle}"></td>
+            <td>
+              <a onclick="return confirm('Êtes-vous sûr ?')"
+                 th:href="@{/admin/delete(id=${p.id_filiere},size=${size},motCle=${motCle},page=${pagecourant})}"
+                 class="btn btn-danger btn-sm">Supprimer</a>
+              <a th:href="@{/admin/editfiliere(id=${p.id_filiere})}"
+                 class="btn btn-warning btn-sm">Modifier</a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <nav aria-label="Page navigation" class="mt-4">
+    <ul class="pagination justify-content-center">
+      <li th:each="pa,status : ${pages}" class="page-item" th:classappend="${status.index == pagecourant} ? 'active' : ''">
+        <a class="page-link" th:href="@{/user/listefiliere(page=${status.index},size=${size},motCle=${motCle})}" th:text="${status.index + 1}"></a>
+      </li>
+    </ul>
+  </nav>
+</div>
+</body>
+</html>
